@@ -1,10 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { NgxGalleryThumbnailsComponent } from '@kolkov/ngx-gallery';
 import { of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Member } from '../_models/member';
+import { PaginationResult } from '../_models/paginations';
 
 @Injectable({
   providedIn: 'root'
@@ -12,17 +13,32 @@ import { Member } from '../_models/member';
 export class MembersService {
 
   members: Member[] = [];
+  paginatedResult: PaginationResult<Member[]> = new PaginationResult<Member[]>();
+
+  page: number = 1;
+  itemsPerPage: number = 5;
 
   baseUrl: string = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
-  getMembers() {
-    if(this.members.length > 0) return of(this.members);
-    return this.http.get<Member[]>(`${this.baseUrl}users`).pipe(
-      map(members => {
-        this.members = members;
-        return members;
+  getMembers(page?: number, itemsPerPage? : number) {
+    let params = new HttpParams();
+
+    if(this.page !== null && this.itemsPerPage !== null) {
+      params = params.append('pageNumber', page?.toString() as string);
+      params = params.append('pageSize', itemsPerPage?.toString() as string);
+    }
+
+    return this.http.get<Member[]>(`${this.baseUrl}users`, {observe: 'response', params}).pipe(
+      map(response => {
+        this.paginatedResult.result = response.body as Member[];
+        
+        if(response.headers.get('Pagination') !== null) {
+          this.paginatedResult.pagination = JSON.parse(response.headers.get('Pagination')!);
+        }
+
+        return this.paginatedResult;
       })
     );
   }
