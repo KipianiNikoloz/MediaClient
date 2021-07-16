@@ -11,16 +11,17 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { ServerErrorComponent } from './server-error/server-error.component';
 import { TestErrorsComponent } from './_errors/test-errors/test-errors.component';
 import { AuthGuard } from './_guards/auth.guard';
+import { HomeGuard } from './_guards/home.guard';
 import { PreventLeaveGuard } from './_guards/prevent-leave.guard';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent},
+  { path: '', component: HomeComponent, canActivate: [HomeGuard]},
   { path: '', runGuardsAndResolvers: 'always', canActivate: [AuthGuard], children: [
     { path: 'members', component: MembersListComponent },
     { path: 'members/:username', component: MembersDetailsComponent },
     { path: 'member/edit', component: MemberEditComponent, canDeactivate: [PreventLeaveGuard] },
-    { path: 'lists', component: ListsComponent, canActivate: [AuthGuard] },
-    { path: 'messages', component: MessagesComponent, canActivate: [AuthGuard] },
+    { path: 'lists', component: ListsComponent },
+    { path: 'messages', component: MessagesComponent },
   ]},
   { path: 'registration', component: RegistrationComponent},
   { path: 'errors', component: TestErrorsComponent },
