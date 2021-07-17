@@ -46,7 +46,9 @@ export class MembersListComponent implements OnInit {
 
   onReset() {
     this.memberService.resetParams();
+    this.userParams = this.memberService.getUserParams();
     this.loadMembers();
+    console.log('pressed')
   }
 
 }

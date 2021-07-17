@@ -1,6 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { NgxGalleryThumbnailsComponent } from '@kolkov/ngx-gallery';
 import { of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -86,6 +85,18 @@ export class MembersService {
 
   resetParams() {
     this.userParams = new UserParams(this.user);
+  }
+
+  addLike(username: string) {
+    return this.http.post(`${this.baseUrl}likes/${username}`, {});
+  }
+
+  getLikes(predicate: string, pageNumber: number, pageSize: number) {
+    let params = this.getParams(pageNumber, pageSize);
+
+    params = params.append('predicate', predicate);
+
+    return this.getPaginatedList<Partial<Member[]>>(`${this.baseUrl}likes`, params);
   }
 
   private getParams(page?: number, itemsPerPage?: number) {

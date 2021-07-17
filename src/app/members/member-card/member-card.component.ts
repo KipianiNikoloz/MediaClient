@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { Member } from 'src/app/_models/member';
+import { MembersService } from 'src/app/_services/members.service';
 
 @Component({
   selector: 'app-member-card',
@@ -9,10 +11,20 @@ import { Member } from 'src/app/_models/member';
 export class MemberCardComponent implements OnInit {
 
   @Input() member!: Member;
+  @Output() likesUpdated = new EventEmitter();
 
-  constructor() { }
+  constructor(private memberService: MembersService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
+    console.log(this.member);
+  }
+
+  addLike(username: string) {
+    this.memberService.addLike(username).subscribe(() => {
+      this.toastr.success(`Action performed on ${username}`);
+    })
+
+    this.likesUpdated.emit();
   }
 
 }
