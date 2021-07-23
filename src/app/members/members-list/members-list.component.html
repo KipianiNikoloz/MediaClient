@@ -2,7 +2,7 @@
     <h2>Your matches - {{pagination?.totalCount}} found</h2>
 </div>
 
-<div class="container mt-3">
+<div class="container-fluid mt-3">
     <form #form='ngForm' class="form-inline mb-3" (ngSubmit)="loadMembers()" autocomplete="off">
         <div class="form-group">
             <label>Age from: </label>
@@ -45,7 +45,7 @@
 </div>
 
 <div class="row d-flex mt-2">
-    <div class="col-2" *ngFor="let member of members">
+    <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12" *ngFor="let member of members">
         <app-member-card [member]="member"></app-member-card>
     </div>
 </div>

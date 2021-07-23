@@ -13,12 +13,13 @@ import { TestErrorsComponent } from './_errors/test-errors/test-errors.component
 import { AuthGuard } from './_guards/auth.guard';
 import { HomeGuard } from './_guards/home.guard';
 import { PreventLeaveGuard } from './_guards/prevent-leave.guard';
+import { MemberDetailedResolver } from './_resolvers/member-detailed.resolver';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [HomeGuard]},
   { path: '', runGuardsAndResolvers: 'always', canActivate: [AuthGuard], children: [
     { path: 'members', component: MembersListComponent },
-    { path: 'members/:username', component: MembersDetailsComponent },
+    { path: 'members/:username', component: MembersDetailsComponent, resolve: {member: MemberDetailedResolver} },
     { path: 'member/edit', component: MemberEditComponent, canDeactivate: [PreventLeaveGuard] },
     { path: 'lists', component: ListsComponent },
     { path: 'messages', component: MessagesComponent },

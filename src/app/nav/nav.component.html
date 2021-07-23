@@ -2,7 +2,7 @@
     <div class="container">
         <a [routerLink]="['/']" class="navbar-brand">.netmedia</a>
 
-        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <ul class="navbar-nav mb-2 mb-md-0">
             <ng-container *ngIf="accountService.currentUser$ | async">
                 <li class="nav-item">
                     <a [routerLink]="['/members']" routerLinkActive="active" class="nav-link">Matches</a>
@@ -14,9 +14,9 @@
                     <a [routerLink]="['/messages']" routerLinkActive="active" class="nav-link">Messages</a>
                 </li>
             </ng-container>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a [routerLink]="['/errors']" routerLinkActive="active" class="nav-link">Errors</a>
-            </li>
+            </li> -->
         </ul>
 
         <div *ngIf="(accountService.currentUser$ | async) as user" class="dropdown" dropdown>

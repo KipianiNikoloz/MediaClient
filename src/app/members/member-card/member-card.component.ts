@@ -16,15 +16,13 @@ export class MemberCardComponent implements OnInit {
   constructor(private memberService: MembersService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    console.log(this.member);
   }
 
   addLike(username: string) {
     this.memberService.addLike(username).subscribe(() => {
+      this.likesUpdated.emit();
       this.toastr.success(`Action performed on ${username}`);
     })
-
-    this.likesUpdated.emit();
   }
 
 }

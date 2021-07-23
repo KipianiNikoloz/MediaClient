@@ -8,3 +8,16 @@ img {
   border: 1px solid rgb(95, 65, 134);
   border-radius: 5px;
 }
+
+
+@media only screen and (max-width: 768px) {
+  .nav-link {
+    font-size: 14px;
+  }
+  .nav-item {
+    max-height: 20.5px;
+  }
+  img {
+    display: none;
+  }
+}

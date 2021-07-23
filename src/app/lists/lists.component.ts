@@ -37,8 +37,4 @@ export class ListsComponent implements OnInit {
     this.loadMembers();
   }
 
-  onUpdate() {
-    this.loadMembers();
-  }
-
 }
