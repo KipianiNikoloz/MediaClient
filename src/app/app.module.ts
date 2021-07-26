@@ -28,6 +28,10 @@ import { PhotoEditComponent } from './members/member-edit/photo-edit/photo-edit.
 import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { DatePickerComponent } from './_forms/date-picker/date-picker.component';
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
+import { AdminComponent } from './_admin/admin/admin.component';
+import { UserManagementComponent } from './_admin/user-management/user-management.component';
+import { PhotoManagementComponent } from './_admin/photo-management/photo-management.component';
+import { UserModalComponent } from './modals/user-modal/user-modal.component';
 
 
 @NgModule({
@@ -49,7 +53,11 @@ import { MemberMessagesComponent } from './members/member-messages/member-messag
     PhotoEditComponent,
     TextInputComponent,
     DatePickerComponent,
-    MemberMessagesComponent
+    MemberMessagesComponent,
+    AdminComponent,
+    UserManagementComponent,
+    PhotoManagementComponent,
+    UserModalComponent
   ],
   imports: [
     BrowserModule,

@@ -23,7 +23,7 @@ export class MembersDetailsComponent implements OnInit {
   @ViewChild('tabs' , {static: true}) tabs!: TabsetComponent;
   activeTab!: TabDirective;
 
-  constructor(private memberService: MembersService, private route: ActivatedRoute, private messageService: MessagesService) { }
+  constructor(private route: ActivatedRoute, private messageService: MessagesService) { }
 
   ngOnInit(): void {
 

@@ -1,0 +1,15 @@
+<h2>Admin panel</h2>
+<div class="tab-panel" *ngIf="(accountService.currentUser$ | async) as user">
+    <tabset class="member-tabset" *ngIf="user.roles.includes('Admin')">
+        <tab heading="User management">
+            <div class="container">
+                <app-user-management></app-user-management>
+            </div>
+        </tab>
+        <tab heading="Photo management">
+            <div class="container">
+                <app-photo-management></app-photo-management>
+            </div>
+        </tab>
+    </tabset>
+</div>

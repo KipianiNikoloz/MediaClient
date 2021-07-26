@@ -3,7 +3,7 @@
         <a [routerLink]="['/']" class="navbar-brand">.netmedia</a>
 
         <ul class="navbar-nav mb-2 mb-md-0">
-            <ng-container *ngIf="accountService.currentUser$ | async">
+            <ng-container *ngIf="(accountService.currentUser$ | async) as user">
                 <li class="nav-item">
                     <a [routerLink]="['/members']" routerLinkActive="active" class="nav-link">Matches</a>
                 </li>
@@ -13,15 +13,15 @@
                 <li class="nav-item">
                     <a [routerLink]="['/messages']" routerLinkActive="active" class="nav-link">Messages</a>
                 </li>
+                <li class="nav-item">
+                    <a [routerLink]="['/admin']" routerLinkActive="active" *ngIf="user.roles.includes('Admin') || user.roles.includes('Moderator')" class="nav-link">Admin</a>
+                </li>
             </ng-container>
-            <!-- <li class="nav-item">
-                <a [routerLink]="['/errors']" routerLinkActive="active" class="nav-link">Errors</a>
-            </li> -->
         </ul>
 
         <div *ngIf="(accountService.currentUser$ | async) as user" class="dropdown" dropdown>
             <img src="{{user.photoUrl || './assets/user.png'}}" alt={{user.knownAs}}>
-            <a class="dropdown-toggle text-light ml-2" dropdownToggle>Welcome {{user.username}}!</a>
+            <a class="dropdown-toggle text-light ml-2" dropdownToggle>Welcome {{ user.knownAs || user.username | titlecase}}!</a>
             <div class="dropdown-menu mt-3" *bsDropdownMenu>
                 <a class="dropdown-item" [routerLink]="['member/edit']" style="color: #32FBE2;">Edit profile</a>
                 <div class="dropdown-divider"></div>

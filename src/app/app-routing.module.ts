@@ -9,7 +9,9 @@ import { MembersListComponent } from './members/members-list/members-list.compon
 import { MessagesComponent } from './messages/messages.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ServerErrorComponent } from './server-error/server-error.component';
+import { AdminComponent } from './_admin/admin/admin.component';
 import { TestErrorsComponent } from './_errors/test-errors/test-errors.component';
+import { AdminGuard } from './_guards/admin.guard';
 import { AuthGuard } from './_guards/auth.guard';
 import { HomeGuard } from './_guards/home.guard';
 import { PreventLeaveGuard } from './_guards/prevent-leave.guard';
@@ -26,6 +28,7 @@ const routes: Routes = [
   ]},
   { path: 'registration', component: RegistrationComponent},
   { path: 'errors', component: TestErrorsComponent },
+  { path: 'admin', component: AdminComponent, canActivate: [AdminGuard] },
   { path: 'not-found', component: NotFoundComponent},
   { path: 'server-error', component: ServerErrorComponent },
   { path: '**', component: NotFoundComponent, pathMatch: 'full' }
