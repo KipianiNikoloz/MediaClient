@@ -21,8 +21,6 @@ export class ListsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadMembers();
-
-    console.log(this.members);
   }
 
   loadMembers() {

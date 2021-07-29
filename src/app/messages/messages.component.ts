@@ -41,9 +41,15 @@ export class MessagesComponent implements OnInit {
   }
 
   deleteMessage(id: number) {
-    this.messageService.deleteMessage(id).subscribe( () => {
-      this.messages.splice(this.messages.findIndex(m => m.id == id))
-    })
+    let result = confirm("Do you want to delete message? this action cannot be undone");
+    if(result) {
+      this.messageService.deleteMessage(id).subscribe( () => {
+        let index = this.messages.findIndex(m => m.id == id);
+        console.log(index);
+        this.messages.splice(index, 1);
+        console.log(this.messages);
+      })
+    }
   }
 
 }

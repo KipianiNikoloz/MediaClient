@@ -1,17 +1,54 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
+import { BehaviorSubject } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { getPaginatedList, getParams } from '../_helpers/paginationHelper';
 import { Message } from '../_models/message';
+import { User } from '../_models/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessagesService {
 
-  baseUrl = environment.apiUrl;
+  private baseUrl = environment.apiUrl;
+  private hubUrl = environment.hubUrl;
+
+  private messageThreadSource = new BehaviorSubject<Message[]>([]);
+  messageThread$ = this.messageThreadSource.asObservable();
+
+  private hub!: HubConnection;
 
   constructor(private http: HttpClient) { }
+
+  getHubConnection(user: User, username: string) {
+    this.hub = new HubConnectionBuilder()
+      .withUrl(this.hubUrl + 'messages?user=' + username, {
+        accessTokenFactory: () => user.token
+      })
+      .withAutomaticReconnect()
+      .build();
+
+    this.hub.start().catch(error => console.log(error));
+
+    this.hub.on('ReceiveMessageThread', (thread: Message[]) => {
+      this.messageThreadSource.next(thread);
+    });
+
+    this.hub.on("NewMessage", message => {
+      this.messageThread$.pipe(take(1)).subscribe( messages => {
+        this.messageThreadSource.next([...messages, message]);
+      });
+    });
+  }
+
+  stopConnection() {
+    if(this.hub) {
+      this.hub.stop();
+    }
+  }
 
   getMessages(pageNumber: number, pageSize: number, container: string) {
     let params = getParams(pageNumber, pageSize);
@@ -24,7 +61,7 @@ export class MessagesService {
   }
 
   sendMessage(username: string, content: string) {
-    return this.http.post<Message>(`${this.baseUrl}messages`, {recipientUsername: username, content })
+    return this.hub.invoke("SendMessage", {recipientUsername: username, content })
   }
 
   deleteMessage(id: number) {
