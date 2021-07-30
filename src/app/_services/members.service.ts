@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy, OnInit } from '@angular/core';
 import { of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -23,10 +23,7 @@ export class MembersService {
   memberCache = new Map();
 
   constructor(private http: HttpClient, private accountService: AccountService) {
-    accountService.currentUser$.pipe(take(1)).subscribe( user => {
-      this.user = user as User;
-      this.userParams = new UserParams(this.user);
-    });
+    this.updateCurrentUser();
   }
 
   getMembers(userParams: UserParams) {
@@ -97,5 +94,12 @@ export class MembersService {
     params = params.append('predicate', predicate);
 
     return getPaginatedList<Partial<Member[]>>(`${this.baseUrl}likes`, params, this.http);
+  }
+
+  updateCurrentUser(){
+    this.accountService.currentUser$.pipe(take(1)).subscribe(user => {
+      this.user = user as User;
+      this.userParams = new UserParams(user as User);
+    })
   }
 }
