@@ -97,9 +97,11 @@ export class MembersService {
   }
 
   updateCurrentUser(){
-    this.accountService.currentUser$.pipe(take(1)).subscribe(user => {
+    this.accountService.currentUser$.subscribe(user => {
       this.user = user as User;
-      this.userParams = new UserParams(user as User);
+      if(user) {
+        this.userParams = new UserParams(user as User);
+      }
     })
   }
 }
