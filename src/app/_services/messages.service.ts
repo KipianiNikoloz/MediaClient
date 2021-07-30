@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { getPaginatedList, getParams } from '../_helpers/paginationHelper';
 import { Message } from '../_models/message';
 import { User } from '../_models/user';
+import { BusyService } from './busy.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +22,10 @@ export class MessagesService {
 
   private hub!: HubConnection;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private busyService: BusyService) { }
 
   getHubConnection(user: User, username: string) {
+    this.busyService.busy();
     this.hub = new HubConnectionBuilder()
       .withUrl(this.hubUrl + 'messages?user=' + username, {
         accessTokenFactory: () => user.token
@@ -31,7 +33,9 @@ export class MessagesService {
       .withAutomaticReconnect()
       .build();
 
-    this.hub.start().catch(error => console.log(error));
+    this.hub.start()
+      .catch(error => console.log(error))
+      .finally(() => this.busyService.idle());
 
     this.hub.on('ReceiveMessageThread', (thread: Message[]) => {
       this.messageThreadSource.next(thread);
@@ -46,6 +50,7 @@ export class MessagesService {
 
   stopConnection() {
     if(this.hub) {
+      this.messageThreadSource.next([]);
       this.hub.stop();
     }
   }
