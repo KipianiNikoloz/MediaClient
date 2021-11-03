@@ -4,7 +4,7 @@
       <h2 class="text-center text-primary">Sign Up</h2>
       <hr>
       <form [formGroup]='registerForm' (ngSubmit)="registerForm.valid && onSubmit()" autocomplete="off">
-        
+
         <div class="form-group">
           <label class="control-label mt-3" style="margin-right: 10px;">I am a: </label>
           <label class="radio-inline">
@@ -14,7 +14,7 @@
             <input type="radio" value="female" formControlName='gender' class="ml-3"> Female
           </label>
         </div>
-        
+
         <app-text-input [formControl]='registerForm.controls["username"]' [label]="'Username'"></app-text-input>
         <app-text-input [formControl]='registerForm.controls["knownAs"]' [label]="'Known As'"></app-text-input>
         <app-date-picker [formControl]='registerForm.controls["dateOfBirth"]' [maxDate]="maxDate" [label]="'Date of Birth'"></app-date-picker>
@@ -22,7 +22,7 @@
         <app-text-input [formControl]='registerForm.controls["city"]' [label]="'City'"></app-text-input>
         <app-text-input [formControl]='registerForm.controls["password"]' [label]="'Password'" [type]="'password'"></app-text-input>
         <app-text-input [formControl]='registerForm.controls["confirmPassword"]' [label]="'Confirm password'" [type]="'password'"></app-text-input>
-        
+
         <div class="row mt-4" *ngIf="validationErrors.length > 0">
           <div class="container">
             <ul>
@@ -30,7 +30,11 @@
             </ul>
           </div>
         </div>
-        
+
+        <div class="row mt-3">
+          <p class="danger">Password must contain uppercase and number</p>
+        </div>
+
         <div class="form-group text-center">
           <button type="submit" class="btn btn-success mr-2" [disabled]="!registerForm.valid">Register</button>
           <button type="menu" class="btn btn-danger mr-2" (click)="onCancel()">Cancel</button>
