@@ -18,12 +18,12 @@
                 <div class="chat-body">
                     <div class="header">
                         <small class="text-muted">
-                            <span><i class="fa fa-clock mr-1"></i>{{message.messageSent | timeago}}</span>
+                            <span><i class="fas fa-check"></i>Sent</span>
                             <span class="text-danger" *ngIf="!message.messageRead && message.senderUserName !== username">
                                 (unread)
                             </span>
                             <span class="text-succes" *ngIf="message.messageRead && message.senderUserName !== username">
-                                (read {{message.messageRead | timeago}})
+                                (read)
                             </span>
                         </small>
                     </div>
